@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Contact Me | Links</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,9 +18,6 @@
           },
           colors: {
             bg: '#080810',
-            surface: '#0f0f1a',
-            card: '#13131f',
-            border: 'rgba(255,255,255,0.06)',
           },
           keyframes: {
             spin: { to: { transform: 'rotate(360deg)' } },
@@ -29,8 +26,8 @@
               to:   { opacity: '1', transform: 'translateY(0)' },
             },
             pulse2: {
-              '0%, 100%': { opacity: '1' },
-              '50%':       { opacity: '0.4' },
+              '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+              '50%':       { opacity: '0.6', transform: 'scale(0.85)' },
             },
             shimmer: {
               '0%':   { backgroundPosition: '-200% center' },
@@ -39,253 +36,239 @@
           },
           animation: {
             spin:    'spin 6s linear infinite',
-            fadeUp:  'fadeUp 0.6s ease both',
-            fadeUp1: 'fadeUp 0.55s 0.10s ease both',
-            fadeUp2: 'fadeUp 0.55s 0.18s ease both',
-            fadeUp3: 'fadeUp 0.55s 0.26s ease both',
-            fadeUp4: 'fadeUp 0.55s 0.34s ease both',
-            fadeUp5: 'fadeUp 0.55s 0.42s ease both',
-            pulse2:  'pulse2 2.5s ease-in-out infinite',
+            fadeUp:  'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both',
+            fadeUp1: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
+            fadeUp2: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both',
+            fadeUp3: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both',
+            fadeUp4: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both',
+            fadeUp5: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both',
+            pulse2:  'pulse2 2s ease-in-out infinite',
           },
         }
       }
     }
   </script>
   <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
       body {
           background-color: #080810;
           font-family: 'DM Sans', sans-serif;
           min-height: 100vh;
+          overflow-x: hidden;
       }
 
-      /* Grain overlay */
+      /* Noise overlay for texture */
       body::before {
           content: '';
           position: fixed;
           inset: 0;
           z-index: 1;
           pointer-events: none;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-          opacity: 0.4;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       }
 
-      /* Ambient orbs */
+      /* Ambient orbs - adjusted for better mobile spread */
       .orb {
           position: fixed;
           border-radius: 50%;
           pointer-events: none;
           z-index: 0;
-          filter: blur(90px);
+          filter: blur(100px);
       }
 
       /* Avatar ring spin */
-      .avatar-ring { animation: spin 7s linear infinite; }
+      .avatar-ring { animation: spin 8s linear infinite; }
 
-      /* Link card hover */
+      /* Glassmorphism Link Card */
       .link-card {
-          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-          border-color 0.22s ease,
-          box-shadow 0.22s ease;
-          -webkit-tap-highlight-color: transparent;
-      }
-      .link-card:hover {
-          transform: translateY(-3px) scale(1.01);
-          border-color: rgba(255,255,255,0.13) !important;
-      }
-      .link-card:active { transform: scale(0.975); }
-
-      /* Logo icons hover */
-      .logo-icon {
-          transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-      .link-card:hover .logo-icon { transform: scale(1.08); }
-
-      /* Arrow slide */
-      .arrow-icon {
-          transition: transform 0.22s ease, opacity 0.22s ease;
-          opacity: 0.35;
-      }
-      .link-card:hover .arrow-icon {
-          transform: translateX(4px);
-          opacity: 0.7;
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
-      /* Shimmer on name */
+      /* Active state is crucial for mobile touch feedback */
+      .link-card:active {
+          transform: scale(0.96);
+          background: rgba(255, 255, 255, 0.06);
+      }
+
+      /* Desktop hover effects (graceful degradation on mobile) */
+      @media (hover: hover) {
+          .link-card:hover {
+              transform: translateY(-4px);
+              background: rgba(255, 255, 255, 0.05);
+              border-color: rgba(255, 255, 255, 0.2);
+          }
+          .link-card:hover .logo-icon { transform: scale(1.1) rotate(-3deg); }
+          .link-card:hover .arrow-icon { transform: translateX(6px); opacity: 1; color: white;}
+
+          /* Glow effects on hover */
+          .fb-card:hover { box-shadow: 0 10px 30px -10px rgba(24,119,242,0.3); }
+          .ig-card:hover { box-shadow: 0 10px 30px -10px rgba(225,48,108,0.3); }
+          .gh-card:hover { box-shadow: 0 10px 30px -10px rgba(255,255,255,0.1); }
+          .tiktok-card:hover { box-shadow: 0 10px 30px -10px rgba(0,242,234,0.2); }
+          .locket-card:hover { box-shadow: 0 10px 30px -10px rgba(245,183,0,0.2); }
+      }
+
+      .logo-icon { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+      .arrow-icon { transition: all 0.3s ease; opacity: 0.4; }
+
+      /* Shimmer Text */
       .shimmer-text {
-          background: linear-gradient(90deg, #e2e0ff 0%, #fff 30%, #c4b5fd 60%, #fff 80%, #e2e0ff 100%);
+          background: linear-gradient(90deg, #fff 0%, #a78bfa 40%, #fff 60%, #e2e0ff 100%);
           background-size: 200% auto;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: shimmer 4s linear infinite;
+          animation: shimmer 3.5s linear infinite;
       }
 
-      /* Footer heartbeat */
+      /* Footer animations */
       @keyframes heartbeat {
           0%, 100% { transform: scale(1); }
-          14%       { transform: scale(1.3); }
-          28%       { transform: scale(1); }
-          42%       { transform: scale(1.2); }
-          70%       { transform: scale(1); }
+          15% { transform: scale(1.25); }
+          30% { transform: scale(1); }
+          45% { transform: scale(1.15); }
+          60% { transform: scale(1); }
       }
-      .heart-beat { display: inline-block; animation: heartbeat 1.8s ease-in-out infinite; }
+      .heart-beat { display: inline-block; animation: heartbeat 2s ease-in-out infinite; }
 
-      /* Footer float */
       @keyframes floatUp {
-          0%, 100% { transform: translateY(0); opacity: 0.22; }
-          50%       { transform: translateY(-4px); opacity: 0.38; }
+          0%, 100% { transform: translateY(0); opacity: 0.3; }
+          50% { transform: translateY(-5px); opacity: 0.6; }
       }
-      .footer-wrap { animation: floatUp 3.5s ease-in-out infinite; }
-
-      /* FB glow on hover */
-      .fb-card:hover .logo-icon { box-shadow: 0 0 20px rgba(24,119,242,0.5); }
-      /* IG glow */
-      .ig-card:hover .logo-icon { box-shadow: 0 0 20px rgba(225,48,108,0.45); }
-      /* GH glow */
-      .gh-card:hover .logo-icon { box-shadow: 0 0 16px rgba(200,200,200,0.2); }
-      /* Locket glow */
-      .locket-card:hover .logo-icon { box-shadow: 0 0 22px rgba(255,190,0,0.55); }
-      /* TikTok glow */
-      .tiktok-card:hover .logo-icon { box-shadow: 0 0 18px rgba(0,242,234,0.4); }
+      .footer-wrap { animation: floatUp 4s ease-in-out infinite; }
   </style>
 </head>
-<body class="relative overflow-x-hidden">
+<body class="relative text-white antialiased selection:bg-purple-500/30">
 
-<div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(109,40,217,0.28),transparent 70%);top:-120px;left:-150px;opacity:1;"></div>
-<div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(236,72,153,0.22),transparent 70%);top:35%;right:-160px;opacity:1;"></div>
-<div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(6,182,212,0.18),transparent 70%);bottom:12%;left:0;opacity:1;"></div>
+<!-- Background Ambient Orbs -->
+<div class="orb" style="width:60vw; height:60vw; background:radial-gradient(circle,rgba(124,58,237,0.2),transparent 60%); top:-10%; left:-20%;"></div>
+<div class="orb" style="width:70vw; height:70vw; background:radial-gradient(circle,rgba(236,72,153,0.15),transparent 60%); top:40%; right:-30%;"></div>
+<div class="orb" style="width:50vw; height:50vw; background:radial-gradient(circle,rgba(6,182,212,0.15),transparent 60%); bottom:-10%; left:-10%;"></div>
 
-<main class="relative z-10 flex flex-col items-center px-5 py-14 pb-20 min-h-screen">
-  <div class="w-full max-w-[400px] flex flex-col items-center animate-fadeUp">
+<main class="relative z-10 flex flex-col items-center px-6 py-12 sm:py-20 min-h-[100dvh] justify-center">
+  <div class="w-full max-w-[420px] flex flex-col items-center animate-fadeUp">
 
-    <div class="relative mb-5">
-      <div class="avatar-ring w-[88px] h-[88px] rounded-full p-[2.5px]"
+    <!-- Avatar Section -->
+    <div class="relative mb-6">
+      <div class="avatar-ring w-[100px] h-[100px] rounded-full p-[3px]"
            style="background: conic-gradient(from 0deg, #7c3aed, #ec4899, #f59e0b, #06b6d4, #7c3aed);">
-        <div class="w-full h-full rounded-full flex items-center justify-center border-[3px] border-[#080810] overflow-hidden"
-             style="background:#13131f;">
-          <img src="./public/ava.jpg" alt="Avatar" class="w-full h-full object-cover select-none" />
+        <div class="w-full h-full rounded-full flex items-center justify-center border-[4px] border-[#080810] overflow-hidden bg-gray-900">
+          <img src="./public/ava.jpg" alt="Avatar" class="w-full h-full object-cover select-none" onerror="this.src='https://ui-avatars.com/api/?name=Tuan+Anh&background=13131f&color=fff'" />
         </div>
       </div>
-      <span class="absolute bottom-1 right-1 w-[13px] h-[13px] rounded-full bg-emerald-400 border-2 border-[#080810] animate-pulse2"
-            style="box-shadow:0 0 8px rgba(52,211,153,0.7);"></span>
+      <!-- Online Indicator -->
+      <span class="absolute bottom-[2px] right-[2px] w-[16px] h-[16px] rounded-full bg-emerald-400 border-[3px] border-[#080810] animate-pulse2 shadow-[0_0_12px_rgba(52,211,153,0.8)]"></span>
     </div>
 
-    <h1 class="font-display font-black text-[22px] tracking-tight mb-1 shimmer-text">Trịnh Tuấn Anh</h1>
-
-    <p class="text-[13px] font-light italic mb-9 text-center max-w-[240px] leading-relaxed"
-       style="color:rgba(240,239,255,0.45);">
+    <!-- Info Section -->
+    <h1 class="font-display font-black text-2xl sm:text-[26px] tracking-tight mb-1.5 shimmer-text">Trịnh Tuấn Anh</h1>
+    <p class="text-[14px] font-light italic mb-10 text-center max-w-[280px] leading-relaxed text-white/50">
       Kết nối với mình qua các nền tảng bên dưới ✦
     </p>
 
-    <nav class="w-full flex flex-col gap-[10px]" aria-label="Social links">
+    <!-- Links Section -->
+    <nav class="w-full flex flex-col gap-3.5" aria-label="Social links">
 
+      <!-- Facebook -->
       <a href="https://www.facebook.com/share/1LWMt7zmPi/?mibextid=wwXIfr" target="_blank" rel="noopener"
-         class="link-card fb-card flex items-center gap-4 px-4 py-[14px] rounded-2xl border text-white no-underline animate-fadeUp1"
-         style="background:#13131f;border-color:rgba(255,255,255,0.07);">
-        <div class="logo-icon w-[46px] h-[46px] rounded-[14px] flex items-center justify-center flex-shrink-0 transition-all"
-             style="background:#1877F2;">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+         class="link-card fb-card flex items-center gap-4 px-4 py-3.5 rounded-2xl no-underline animate-fadeUp1 group">
+        <div class="logo-icon w-12 h-12 rounded-[14px] flex items-center justify-center flex-shrink-0 shadow-lg"
+             style="background: linear-gradient(135deg, #1877F2, #0e56b5);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.269h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <span class="block font-display font-bold text-[14.5px] text-white leading-tight">Facebook</span>
-          <span class="block text-[11.5px] mt-[3px] truncate" style="color:rgba(255,255,255,0.42);">Ghé thăm trang cá nhân</span>
+          <span class="block font-display font-bold text-[15px] text-white/90 leading-tight">Facebook</span>
+          <span class="block text-[12px] mt-1 truncate text-white/40">Ghé thăm trang cá nhân</span>
         </div>
         <span class="arrow-icon flex-shrink-0">
-            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </span>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
       </a>
 
+      <!-- Instagram -->
       <a href="https://www.instagram.com/tuns_akn?igsh=MWpnaWM5Njg1eTQ4MQ%3D%3D&utm_source=qr" target="_blank" rel="noopener"
-         class="link-card ig-card flex items-center gap-4 px-4 py-[14px] rounded-2xl border text-white no-underline animate-fadeUp2"
-         style="background:#13131f;border-color:rgba(255,255,255,0.07);">
-        <div class="logo-icon w-[46px] h-[46px] rounded-[14px] flex items-center justify-center flex-shrink-0 transition-all"
-             style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+         class="link-card ig-card flex items-center gap-4 px-4 py-3.5 rounded-2xl no-underline animate-fadeUp2 group">
+        <div class="logo-icon w-12 h-12 rounded-[14px] flex items-center justify-center flex-shrink-0 shadow-lg"
+             style="background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <span class="block font-display font-bold text-[14.5px] text-white leading-tight">Instagram</span>
-          <span class="block text-[11.5px] mt-[3px] truncate" style="color:rgba(255,255,255,0.42);">@tuns_akn</span>
+          <span class="block font-display font-bold text-[15px] text-white/90 leading-tight">Instagram</span>
+          <span class="block text-[12px] mt-1 truncate text-white/40">@tuns_akn</span>
         </div>
         <span class="arrow-icon flex-shrink-0">
-            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </span>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
       </a>
 
+      <!-- GitHub -->
       <a href="https://github.com/TuanAnh-git26" target="_blank" rel="noopener"
-         class="link-card gh-card flex items-center gap-4 px-4 py-[14px] rounded-2xl border text-white no-underline animate-fadeUp3"
-         style="background:#13131f;border-color:rgba(255,255,255,0.07);">
-        <div class="logo-icon w-[46px] h-[46px] rounded-[14px] flex items-center justify-center flex-shrink-0 transition-all"
-             style="background:#21262d;border:1px solid rgba(255,255,255,0.1);">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+         class="link-card gh-card flex items-center gap-4 px-4 py-3.5 rounded-2xl no-underline animate-fadeUp3 group">
+        <div class="logo-icon w-12 h-12 rounded-[14px] flex items-center justify-center flex-shrink-0 shadow-lg"
+             style="background: linear-gradient(135deg, #2b3137, #181c20); border:1px solid rgba(255,255,255,0.05);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <span class="block font-display font-bold text-[14.5px] text-white leading-tight">GitHub</span>
-          <span class="block text-[11.5px] mt-[3px] truncate" style="color:rgba(255,255,255,0.42);">github.com/TuanAnh-git26</span>
+          <span class="block font-display font-bold text-[15px] text-white/90 leading-tight">GitHub</span>
+          <span class="block text-[12px] mt-1 truncate text-white/40">github.com/TuanAnh-git26</span>
         </div>
         <span class="arrow-icon flex-shrink-0">
-            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </span>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
       </a>
 
+      <!-- TikTok -->
       <a href="https://www.tiktok.com/@tun_ahn_?_r=1&_t=ZS-96jyZldnPSU" target="_blank" rel="noopener"
-         class="link-card tiktok-card flex items-center gap-4 px-4 py-[14px] rounded-2xl border text-white no-underline animate-fadeUp4"
-         style="background:#13131f;border-color:rgba(255,255,255,0.07);">
-        <div class="logo-icon w-[46px] h-[46px] rounded-[14px] flex items-center justify-center flex-shrink-0 transition-all"
-             style="background:#010101;border:1px solid rgba(255,255,255,0.08);">
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+         class="link-card tiktok-card flex items-center gap-4 px-4 py-3.5 rounded-2xl no-underline animate-fadeUp4 group">
+        <div class="logo-icon w-12 h-12 rounded-[14px] flex items-center justify-center flex-shrink-0 shadow-lg"
+             style="background: linear-gradient(135deg, #111, #000); border:1px solid rgba(255,255,255,0.05);">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <span class="block font-display font-bold text-[14.5px] text-white leading-tight">TikTok</span>
-          <span class="block text-[11.5px] mt-[3px] truncate" style="color:rgba(255,255,255,0.42);">@tun_ahn_</span>
+          <span class="block font-display font-bold text-[15px] text-white/90 leading-tight">TikTok</span>
+          <span class="block text-[12px] mt-1 truncate text-white/40">@tun_ahn_</span>
         </div>
         <span class="arrow-icon flex-shrink-0">
-            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </span>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
       </a>
 
+      <!-- Locket -->
       <a href="https://locket.camera/links/q8jFczXhbyLGVnDH7" target="_blank" rel="noopener"
-         class="link-card locket-card flex items-center gap-4 px-4 py-[14px] rounded-2xl border text-white no-underline animate-fadeUp5"
-         style="background:#13131f;border-color:rgba(255,255,255,0.07);">
-        <div class="logo-icon w-[46px] h-[46px] rounded-[14px] flex items-center justify-center flex-shrink-0 transition-all"
-             style="background:#F5B700;">
-          <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+         class="link-card locket-card flex items-center gap-4 px-4 py-3.5 rounded-2xl no-underline animate-fadeUp5 group">
+        <div class="logo-icon w-12 h-12 rounded-[14px] flex items-center justify-center flex-shrink-0 shadow-lg"
+             style="background: linear-gradient(135deg, #FFC700, #F5B700);">
+          <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M50 82C50 82 18 62 18 38C18 27.5 26.5 19 37 19C42.5 19 47.5 21.5 51 25.5C51 25.5 50 26.8 50 27C50 26.8 49 25.5 49 25.5C52.5 21.5 57.5 19 63 19C73.5 19 82 27.5 82 38C82 62 50 82 50 82Z" fill="#c8860a"/>
           </svg>
         </div>
         <div class="flex-1 min-w-0">
-          <span class="block font-display font-bold text-[14.5px] text-white leading-tight">Locket</span>
-          <span class="block text-[11.5px] mt-[3px] truncate" style="color:rgba(255,255,255,0.42);">Xem ảnh trên Locket</span>
+          <span class="block font-display font-bold text-[15px] text-white/90 leading-tight">Locket</span>
+          <span class="block text-[12px] mt-1 truncate text-white/40">Xem ảnh trên Locket</span>
         </div>
         <span class="arrow-icon flex-shrink-0">
-            <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </span>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
       </a>
 
     </nav>
 
-    <div class="footer-wrap mt-10 flex items-center gap-2">
-      <span class="text-[10px] tracking-[2.5px] uppercase font-light" style="color:rgba(255,255,255,0.22);">made with</span>
-      <span class="heart-beat text-[15px]" style="color:#f43f5e; filter: drop-shadow(0 0 6px rgba(244,63,94,0.7));">♥</span>
-      <span class="text-[10px] tracking-[2.5px] uppercase font-light" style="color:rgba(255,255,255,0.22);">love</span>
+    <!-- Footer -->
+    <div class="footer-wrap mt-12 flex items-center gap-2">
+      <span class="text-[10px] tracking-[3px] uppercase font-medium text-white/30">made with</span>
+      <span class="heart-beat text-[16px] text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]">♥</span>
+      <span class="text-[10px] tracking-[3px] uppercase font-medium text-white/30">love</span>
     </div>
 
   </div>
